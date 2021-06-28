@@ -24,18 +24,30 @@ class Book {
   Book({
     required this.name,
     required this.id,
+    required this.price,
+    required this.selected,
+    required this.numberOfCopies,
   });
 
   String name;
   int id;
+  double price;
+  bool selected;
+  int numberOfCopies;
 
   factory Book.fromJson(Map<String, dynamic> json) => Book(
     name: json["name"],
     id: json["id"],
+    price: json["price"],
+    selected: json["selected"],
+    numberOfCopies: json["numberOfCopies"],
   );
 
   Map<String, dynamic> toJson() => {
     "name": name,
     "id": id,
+    "price": price,
+    "selected": selected,
+    "numberOfCopies": numberOfCopies,
   };
 }
