@@ -33,7 +33,6 @@ class CartProvider with ChangeNotifier {
   void calculateTotalDiscount() {
     int _totalBooks = getSelectedBooks().length;
     List<int> _copiesSet = [];
-    // Combinations _combinations;
 
     /// Variety discount
     if (_totalBooks == 2)
@@ -51,21 +50,6 @@ class CartProvider with ChangeNotifier {
       }
     });
 
-    // _combinations = Combinations(_copiesSet.length, characters(_copiesSet));
-    // for (final combination in _combinations()) {
-    //   int _total = 0;
-    //   combination.forEach((combo) {
-    //     _total = _total + int.parse(combo);
-    //   });
-    //   if (_total % 5 == 0 && _totalBooks == 2)
-    //     totalDiscount = totalDiscount + 5;
-    //   else if (_total % 5 == 0 && _totalBooks == 3)
-    //     totalDiscount = totalDiscount + 10;
-    //   else if (_total % 5 == 0 && _totalBooks == 4)
-    //     totalDiscount = totalDiscount + 20;
-    //   else if (_total % 5 == 0 && _totalBooks == 5)
-    //     totalDiscount = totalDiscount + 25;
-    // }
     int _counter = 0;
     _copiesSet.forEach((element) {
       for(int i = _counter; i < _copiesSet.length; i++) {
