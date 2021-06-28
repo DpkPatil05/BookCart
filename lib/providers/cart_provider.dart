@@ -50,20 +50,20 @@ class CartProvider with ChangeNotifier {
       }
     });
 
-    int _counter = 0;
-    _copiesSet.forEach((element) {
-      for(int i = _counter; i < _copiesSet.length; i++) {
-        if ((element + _copiesSet[i]) % 5 == 0 && _totalBooks == 2)
-          totalDiscount = totalDiscount + 5;
-        else if ((element + _copiesSet[i]) % 5 == 0 && _totalBooks == 3)
-          totalDiscount = totalDiscount + 10;
-        else if ((element + _copiesSet[i]) % 5 == 0 && _totalBooks == 4)
-          totalDiscount = totalDiscount + 20;
-        else if ((element + _copiesSet[i]) % 5 == 0 && _totalBooks == 5)
-          totalDiscount = totalDiscount + 25;
-      }
-      _counter++;
-    });
+    // int _counter = 0;
+    // _copiesSet.forEach((element) {
+    //   for(int i = _counter; i < _copiesSet.length; i++) {
+    //     if ((element + _copiesSet[i]) % 5 == 0 && _totalBooks == 2)
+    //       totalDiscount = totalDiscount + 5;
+    //     else if ((element + _copiesSet[i]) % 5 == 0 && _totalBooks == 3)
+    //       totalDiscount = totalDiscount + 10;
+    //     else if ((element + _copiesSet[i]) % 5 == 0 && _totalBooks == 4)
+    //       totalDiscount = totalDiscount + 20;
+    //     else if ((element + _copiesSet[i]) % 5 == 0 && _totalBooks == 5)
+    //       totalDiscount = totalDiscount + 25;
+    //   }
+    //   _counter++;
+    // });
 
     /// Total minus discounted price
     discountedPrice = totalPrice - (totalPrice * totalDiscount / 100);
