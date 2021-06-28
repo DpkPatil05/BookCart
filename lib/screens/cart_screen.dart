@@ -25,20 +25,53 @@ class _CartState extends State<Cart> {
         title: Text('Book Cart'),
         backgroundColor: Palette.primary,
       ),
-      body: Consumer<CartProvider>(builder: (context, prov, _) {
-        return Container(
-          child: Column(
-            children: [
-              Row(
+      body: Consumer<CartProvider>(
+        builder: (context, prov, _) {
+        return Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Card(
+                color: Palette.secondary,
+                child: Text('Select books'),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Card(
-                    color: Palette.secondary,
-                    child: Text('Select books'),
+                  DropdownButton<String>(
+                    value: prov.dropdownValue,
+                    icon: const Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    elevation: 16,
+                    underline: Container(
+                      height: 2,
+                      color: Palette.primary,
+                    ),
+                    onChanged: (String? newValue) {
+                      prov.setDropdownValue(newValue!);
+                    },
+                    items: prov.getBooks()
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
                   ),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      icon: Icon(Icons.person),
+                      hintText: 'Select quantity',
+                      labelText: 'Quantity',
+                    ),
+                  )
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         );
       }),
     );
