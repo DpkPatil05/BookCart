@@ -9,4 +9,5 @@ class Palette {
   static const Color tertiary = Color(0xfffff8f5);
 
   static const Color fontColor = Color(0xff0d0d0d);
+  static const Color bg = Color(0xfff0fcff);
 }

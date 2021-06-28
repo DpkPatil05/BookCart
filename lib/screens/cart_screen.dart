@@ -30,7 +30,7 @@ class _CartState extends State<Cart> {
       ),
       body: Consumer<CartProvider>(builder: (context, prov, _) {
         return Card(
-          color: Colors.white,
+          color: Palette.bg,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           elevation: 2,
           shape: RoundedRectangleBorder(
@@ -146,7 +146,7 @@ class _CartState extends State<Cart> {
               Container(
                 height: 70,
                 child: Card(
-                    color: Palette.tertiary,
+                    color: Palette.secondary,
                     child: Column(
                       children: [
                         Padding(
@@ -178,7 +178,8 @@ class _CartState extends State<Cart> {
                         ),
                       ],
                     )),
-              )
+              ),
+              SizedBox(height: 10)
             ],
           ),
         );
