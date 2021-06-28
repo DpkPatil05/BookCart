@@ -78,6 +78,7 @@ class _CartState extends State<Cart> {
                   ),
                   onChanged: (String? newValue) {
                     prov.setDropdownValue(newValue!);
+                    prov.calculateTotalPriceAndDiscount();
                   },
                   items: prov
                       .getBooks()
@@ -111,6 +112,7 @@ class _CartState extends State<Cart> {
                               width: 120,
                               height: 50,
                               child: TextFormField(
+                                initialValue: 1.toString(),
                                 decoration: InputDecoration(
                                   hintText: 'Count',
                                   icon: Icon(Icons.add, color: Palette.primary),
@@ -134,7 +136,9 @@ class _CartState extends State<Cart> {
                                   FilteringTextInputFormatter.digitsOnly
                                 ],
                                 onChanged: (count) {
-                                  prov.setNoOfCopies(int.parse(count), index);
+                                  prov.setNoOfCopies(int.parse(count),
+                                      prov.getSelectedBooks().elementAt(index));
+                                  prov.calculateTotalPriceAndDiscount();
                                 },
                               ),
                             )
@@ -169,10 +173,10 @@ class _CartState extends State<Cart> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              CustomText(displayText: 'Total price'),
+                              CustomText(displayText: 'Final discounted price'),
                               CustomText(
                                   displayText:
-                                      prov.totalPrice.toString() + '\$')
+                                      prov.discountedPrice.toString() + '\$')
                             ],
                           ),
                         ),

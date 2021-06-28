@@ -4,11 +4,14 @@ import 'package:flutter/cupertino.dart';
 class CartProvider with ChangeNotifier {
   BooksModel booksModel = BooksModel(books: []);
   List<String> selectedBooks = <String>[];
-  int totalDiscount = 0, totalPrice = 0;
+  double totalDiscount = 0, totalPrice = 0, discountedPrice = 0;
 
   void init() {
     booksModel.books = <Book>[];
     selectedBooks = <String>[];
+    totalPrice = 0;
+    totalDiscount = 0;
+    discountedPrice = 0;
 
     /// Add books with prices as $8 per book
     booksModel.books.add(Book(
@@ -27,6 +30,76 @@ class CartProvider with ChangeNotifier {
         name: "Biology", id: 5, price: 8, selected: false, numberOfCopies: 0));
   }
 
+  void calculateTotalDiscount() {
+    int _totalBooks = getSelectedBooks().length;
+    List<int> _copiesSet = [];
+    // Combinations _combinations;
+
+    /// Variety discount
+    if (_totalBooks == 2)
+      totalDiscount = 5;
+    else if (_totalBooks == 3)
+      totalDiscount = 10;
+    else if (_totalBooks == 4)
+      totalDiscount = 20;
+    else if (_totalBooks == 5) totalDiscount = 25;
+
+    /// Calculate discount
+    booksModel.books.forEach((book) {
+      if (book.selected) {
+        _copiesSet.add(book.numberOfCopies);
+      }
+    });
+
+    // _combinations = Combinations(_copiesSet.length, characters(_copiesSet));
+    // for (final combination in _combinations()) {
+    //   int _total = 0;
+    //   combination.forEach((combo) {
+    //     _total = _total + int.parse(combo);
+    //   });
+    //   if (_total % 5 == 0 && _totalBooks == 2)
+    //     totalDiscount = totalDiscount + 5;
+    //   else if (_total % 5 == 0 && _totalBooks == 3)
+    //     totalDiscount = totalDiscount + 10;
+    //   else if (_total % 5 == 0 && _totalBooks == 4)
+    //     totalDiscount = totalDiscount + 20;
+    //   else if (_total % 5 == 0 && _totalBooks == 5)
+    //     totalDiscount = totalDiscount + 25;
+    // }
+    int _counter = 0;
+    _copiesSet.forEach((element) {
+      for(int i = _counter; i < _copiesSet.length; i++) {
+        if ((element + _copiesSet[i]) % 5 == 0 && _totalBooks == 2)
+          totalDiscount = totalDiscount + 5;
+        else if ((element + _copiesSet[i]) % 5 == 0 && _totalBooks == 3)
+          totalDiscount = totalDiscount + 10;
+        else if ((element + _copiesSet[i]) % 5 == 0 && _totalBooks == 4)
+          totalDiscount = totalDiscount + 20;
+        else if ((element + _copiesSet[i]) % 5 == 0 && _totalBooks == 5)
+          totalDiscount = totalDiscount + 25;
+      }
+      _counter++;
+    });
+
+    /// Total minus discounted price
+    discountedPrice = totalPrice - (totalPrice * totalDiscount / 100);
+    notifyListeners();
+  }
+
+  void calculateTotalPriceAndDiscount() {
+    totalPrice = 0;
+    discountedPrice = 0;
+
+    /// Get Total Price
+    booksModel.books.forEach((book) {
+      if (book.selected) {
+        totalPrice = totalPrice + (book.price * book.numberOfCopies);
+      }
+    });
+    calculateTotalDiscount();
+    notifyListeners();
+  }
+
   List<String> getBooks() {
     List<String> books = [];
     booksModel.books.forEach((book) {
@@ -37,10 +110,12 @@ class CartProvider with ChangeNotifier {
 
   void setDropdownValue(String value) {
     booksModel.books.forEach((book) {
-      if (book.name == value) book.selected = true;
+      if (book.name == value) {
+        book.selected = true;
+        book.numberOfCopies = 1;
+        notifyListeners();
+      }
     });
-
-    notifyListeners();
   }
 
   List<String> getSelectedBooks() {
@@ -51,7 +126,8 @@ class CartProvider with ChangeNotifier {
     return selectedBooks;
   }
 
-  void setNoOfCopies(int count, int index) {
+  void setNoOfCopies(int count, String name) {
+    int index = booksModel.books.indexWhere((element) => element.name == name);
     booksModel.books[index].numberOfCopies = count;
     notifyListeners();
   }
